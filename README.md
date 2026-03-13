@@ -23,6 +23,7 @@
 - ✅ **IPv6 支持** - 完整支持 IPv4 和 IPv6
 - ✅ **自动重启** - 容器故障自动重启
 - ✅ **端口转发** - 使用 socat 实现透明端口转发
+- ✅ **可选鉴权** - 可选开启 SOCKS5 用户名/密码鉴权（3proxy），防止公网被滥用
 
 ## 📦 前置要求
 
@@ -72,25 +73,51 @@ docker-compose down
 
 | 配置项 | 默认值 | 说明 |
 |--------|--------|------|
-| `SOCKS_PORT` | 1080 | SOCKS5 代理端口 |
+| `SOCKS_PORT` | 1080 | 容器内 SOCKS5 监听端口（对外端口由 ports 映射决定） |
 | `RESTART_INTERVAL` | 3600 | IP 更换间隔时间（秒），默认 1 小时 |
+| `SOCKS_USER` | *(空)* | （可选）开启 SOCKS5 用户名鉴权，需与 `SOCKS_PASS` 同时设置 |
+| `SOCKS_PASS` | *(空)* | （可选）开启 SOCKS5 密码鉴权，需与 `SOCKS_USER` 同时设置 |
+| `WARP_LOCAL_PORT` | 10080 | （可选）WARP 本地代理端口（容器内部使用） |
 
 ### 修改配置示例
 
-编辑 `docker-compose.yml` 文件中的环境变量：
+编辑 `docker-compose.yml`：
+
+#### 示例 1：仅换端口（将对外端口改为 31080）
 
 ```yaml
+ports:
+  - "31080:1080"
+
 environment:
-  - SOCKS_PORT=1080          # 修改为需要的端口
-  - RESTART_INTERVAL=1800    # 改为 30 分钟自动更换一次
+  - SOCKS_PORT=1080
+  - RESTART_INTERVAL=1800
+  - WARP_LOCAL_PORT=10080
+```
+
+#### 示例 2：换端口 + 开启 SOCKS5 用户名/密码鉴权（推荐公网）
+
+```yaml
+ports:
+  - "31080:1080"
+
+environment:
+  - SOCKS_PORT=1080
+  - RESTART_INTERVAL=1800
+  - WARP_LOCAL_PORT=10080
+  - SOCKS_USER=your_user
+  - SOCKS_PASS=your_strong_password
 ```
 
 然后重启服务：
 
 ```bash
-docker-compose down
-docker-compose up -d
+docker compose down
+docker compose up -d --build
 ```
+
+> 不设置 `SOCKS_USER`/`SOCKS_PASS` 时，将回退为原始 socat 转发（无鉴权）。
+> 同时建议在云厂商安全组仅放行你需要的端口（例如 31080/tcp）。
 
 ## 💻 使用方法
 

@@ -1,0 +1,19 @@
+# 3proxy config template
+# - Exposes authenticated SOCKS5 on ${SOCKS_PORT}
+# - Forwards traffic to WARP local proxy at 127.0.0.1:${WARP_LOCAL_PORT}
+
+nserver 1.1.1.1
+nserver 8.8.8.8
+
+# authentication
+auth strong
+users ${SOCKS_USER}:CL:${SOCKS_PASS}
+
+# allow only authenticated users
+allow ${SOCKS_USER}
+
+# chain to WARP local proxy (socks5 on 127.0.0.1:${WARP_LOCAL_PORT})
+parent 1000 socks5 127.0.0.1 ${WARP_LOCAL_PORT}
+
+# listen socks5
+socks -p${SOCKS_PORT} -a

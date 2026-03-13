@@ -5,13 +5,19 @@ services:
     build: .
     container_name: warp-socks
     restart: always
-    privileged: true # WARP 服务可能需要较高权限来配置网络
+    privileged: true
     cap_add:
       - NET_ADMIN
     ports:
-      - "1080:1080" # 宿主机端口:容器端口
+      - "1080:1080"
     environment:
-      - SOCKS_PORT=1080          # 暴露的 SOCKS5 代理端口
-      - RESTART_INTERVAL=3600    # 定时更换 IP 的时间间隔（秒），3600即为1小时
+      - SOCKS_PORT=1080
+      - RESTART_INTERVAL=3600
+      # Optional: enable SOCKS5 username/password auth
+      # If both are set, container will expose authenticated SOCKS5 via 3proxy.
+      # - SOCKS_USER=change_me
+      # - SOCKS_PASS=change_me
+      # Optional: override internal WARP local proxy port (default 10080)
+      - WARP_LOCAL_PORT=10080
     sysctls:
-      - net.ipv6.conf.all.disable_ipv6=0 # 确保容器内开启 IPv6 支持
+      - net.ipv6.conf.all.disable_ipv6=0
