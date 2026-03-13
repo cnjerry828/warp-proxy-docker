@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  warp1:
+    build: .
+    container_name: warp1
+    restart: always
+    ports:
+      - "31080:1080"
+    environment:
+      - ROTATE_INTERVAL=3600
+      - WIREPROXY_PORT=1080
+      - SOCKS_PORT=1080
+      - SOCKS_USER=warp
+      - SOCKS_PASS=REPLACE_UUID_1
+    volumes:
+      - warp1:/etc/wireguard
+
+  warp2:
+    build: .
+    container_name: warp2
+    restart: always
+    ports:
+      - "31081:1080"
+    environment:
+      - ROTATE_INTERVAL=3600
+      - WIREPROXY_PORT=1080
+      - SOCKS_PORT=1080
+      - SOCKS_USER=warp
+      - SOCKS_PASS=REPLACE_UUID_2
+    volumes:
+      - warp2:/etc/wireguard
+
+  warp3:
+    build: .
+    container_name: warp3
+    restart: always
+    ports:
+      - "31082:1080"
+    environment:
+      - ROTATE_INTERVAL=3600
+      - WIREPROXY_PORT=1080
+      - SOCKS_PORT=1080
+      - SOCKS_USER=warp
+      - SOCKS_PASS=REPLACE_UUID_3
+    volumes:
+      - warp3:/etc/wireguard
+
+volumes:
+  warp1: {}
+  warp2: {}
+  warp3: {}
