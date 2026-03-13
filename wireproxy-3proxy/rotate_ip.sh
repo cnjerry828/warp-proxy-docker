@@ -21,7 +21,7 @@ do
   echo "" >> wireproxy.conf
   echo "[Socks5]" >> wireproxy.conf
   # bind local wireproxy only
-  echo "BindAddress = 127.0.0.1:${WIREPROXY_PORT:-1080}" >> wireproxy.conf
+  echo "BindAddress = 127.0.0.1:${WIREPROXY_PORT:-10080}" >> wireproxy.conf
   sed -i 's/DNS = .*/DNS = 1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001/g' wireproxy.conf
 
   echo "[INFO] Restarting wireproxy..."

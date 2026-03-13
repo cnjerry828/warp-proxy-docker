@@ -5,11 +5,15 @@ services:
     build: .
     container_name: warp1
     restart: always
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
     ports:
       - "31080:1080"
     environment:
       - ROTATE_INTERVAL=3600
-      - WIREPROXY_PORT=1080
+      - WIREPROXY_PORT=10080
       - SOCKS_PORT=1080
       - SOCKS_USER=warp
       - SOCKS_PASS=REPLACE_UUID_1
@@ -20,11 +24,15 @@ services:
     build: .
     container_name: warp2
     restart: always
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
     ports:
       - "31081:1080"
     environment:
       - ROTATE_INTERVAL=3600
-      - WIREPROXY_PORT=1080
+      - WIREPROXY_PORT=10080
       - SOCKS_PORT=1080
       - SOCKS_USER=warp
       - SOCKS_PASS=REPLACE_UUID_2
@@ -35,11 +43,15 @@ services:
     build: .
     container_name: warp3
     restart: always
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
     ports:
       - "31082:1080"
     environment:
       - ROTATE_INTERVAL=3600
-      - WIREPROXY_PORT=1080
+      - WIREPROXY_PORT=10080
       - SOCKS_PORT=1080
       - SOCKS_USER=warp
       - SOCKS_PASS=REPLACE_UUID_3
