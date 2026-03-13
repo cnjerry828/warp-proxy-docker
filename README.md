@@ -38,7 +38,7 @@
 ### 1. 克隆项目
 
 ```bash
-git clone [https://github.com/kschen202115/warp-proxy-docker](https://github.com/cnjerry828/warp-proxy-docker).git
+git clone https://github.com/cnjerry828/warp-proxy-docker.git
 cd warp-proxy-docker
 ```
 
